@@ -4,254 +4,1067 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TypeMaster - Typing Speed Test</title>
+<title>TypeMaster Pro | Typing Practice</title>
+
 <style>
+:root{
+ --bg:#f1f5f9;--card:#fff;--text:#172033;
+ --muted:#64748b;--primary:#6366f1;--soft:#eef2ff;
+ --border:#e2e8f0;--green:#16a34a;--red:#ef4444;
+}
+body.dark{
+ --bg:#0b1120;--card:#172337;--text:#f8fafc;
+ --muted:#a3b1c6;--primary:#818cf8;--soft:#26334c;
+ --border:#334155;--green:#4ade80;--red:#fb7185;
+}
 *{box-sizing:border-box;margin:0;padding:0}
 body{
- font-family:Arial,sans-serif;
- background:linear-gradient(135deg,#101827,#243b55);
- color:#fff;min-height:100vh;padding:25px;
- display:flex;justify-content:center;align-items:center
+ font-family:Arial,sans-serif;background:var(--bg);
+ color:var(--text);min-height:100vh;transition:.25s;
 }
-.container{
- width:100%;max-width:850px;background:#172337;
- padding:30px;border-radius:20px;
- box-shadow:0 15px 40px #0005
+header{
+ background:var(--card);border-bottom:1px solid var(--border);
+ padding:17px 5%;display:flex;justify-content:space-between;
+ align-items:center;gap:15px;flex-wrap:wrap;
 }
-h1{text-align:center;color:#60a5fa;margin-bottom:10px}
-.subtitle{text-align:center;color:#aab8cc;margin-bottom:25px}
+.logo{font-size:24px;font-weight:800;color:var(--primary)}
+.logo span{color:var(--text)}
+.header-right{display:flex;align-items:center;gap:12px}
+button,select{
+ border:0;border-radius:9px;padding:11px 15px;
+ cursor:pointer;font-weight:600;font-size:13px;
+}
+button{background:var(--primary);color:white}
+button:hover{filter:brightness(1.1)}
+button:disabled{opacity:.5;cursor:not-allowed}
+select{
+ background:var(--soft);color:var(--text);
+ border:1px solid var(--border);
+}
+.secondary{background:var(--soft);color:var(--text)}
+.danger{background:#fee2e2;color:#b91c1c}
+.container{max-width:1150px;margin:30px auto;padding:0 20px}
+.welcome{margin-bottom:25px}
+.welcome h1{font-size:30px;margin-bottom:8px}
+.welcome p{color:var(--muted)}
 .stats{
  display:grid;grid-template-columns:repeat(4,1fr);
- gap:12px;margin-bottom:25px
+ gap:15px;margin-bottom:22px
 }
-.stat{
- background:#24344d;padding:18px 8px;
- border-radius:12px;text-align:center
+.card{
+ background:var(--card);border:1px solid var(--border);
+ padding:20px;border-radius:15px;
+ box-shadow:0 4px 15px #00000008;
 }
-.stat h2{color:#60a5fa;font-size:27px}
-.stat p{color:#aab8cc;font-size:13px;margin-top:5px}
-.controls{
- display:flex;justify-content:center;gap:10px;
- flex-wrap:wrap;margin-bottom:20px
+.stat-label{font-size:13px;color:var(--muted)}
+.stat-value{font-size:29px;font-weight:800;margin-top:9px}
+.stat-icon{font-size:21px}
+.layout{
+ display:grid;grid-template-columns:minmax(0,1.7fr) minmax(260px,1fr);
+ gap:18px;align-items:start;
 }
-button,select{
- padding:11px 17px;border:0;border-radius:8px;
- cursor:pointer;font-size:14px;font-weight:bold
+.section-title{
+ display:flex;justify-content:space-between;
+ align-items:center;gap:10px;margin-bottom:17px;
 }
-button{background:#3b82f6;color:white}
-button:hover{background:#2563eb}
-select{background:#24344d;color:white}
+.section-title h2{font-size:18px}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:17px}
 .passage{
- background:#24344d;padding:22px;border-radius:12px;
- font-size:19px;line-height:1.8;
- margin-bottom:18px;min-height:125px
+ background:var(--soft);padding:23px;border-radius:12px;
+ font-size:19px;line-height:2;letter-spacing:.3px;
+ min-height:150px;overflow-wrap:anywhere;margin-bottom:15px;
 }
-.correct{color:#4ade80}
-.incorrect{color:#fb7185;background:#7f1d1d55}
-.current{border-bottom:2px solid #60a5fa}
+.correct{color:var(--green)}
+.incorrect{color:var(--red);background:#ef444422;border-radius:3px}
+.current{border-bottom:3px solid var(--primary)}
 textarea{
- width:100%;height:130px;padding:15px;
- border-radius:10px;border:2px solid #3b82f6;
- background:#101827;color:white;font-size:17px;
- resize:none;outline:none
+ width:100%;height:120px;resize:vertical;padding:15px;
+ border-radius:11px;background:var(--bg);color:var(--text);
+ border:2px solid var(--border);outline:none;
+ font-size:16px;line-height:1.7;
 }
+textarea:focus{border-color:var(--primary)}
 textarea:disabled{opacity:.6}
 .progress{
- height:9px;background:#334155;border-radius:10px;
- margin-top:18px;overflow:hidden
+ height:8px;background:var(--border);
+ border-radius:20px;overflow:hidden;margin:15px 0;
 }
-#progressBar{
- width:0%;height:100%;background:#60a5fa;
- transition:width .2s
+.progress div{
+ height:100%;width:0;background:var(--primary);
+ transition:width .2s;
 }
+.live-stats{
+ display:grid;grid-template-columns:repeat(3,1fr);
+ gap:10px;margin-top:15px;
+}
+.live-box{
+ background:var(--soft);padding:13px;
+ border-radius:10px;text-align:center;
+}
+.live-box strong{display:block;font-size:21px;margin-bottom:4px}
+.live-box small{color:var(--muted)}
 .result{
- display:none;background:#24344d;padding:22px;
- border-radius:12px;margin-top:20px;text-align:center
+ display:none;margin-top:18px;padding:20px;
+ background:var(--soft);border-radius:12px;
 }
-.result h2{color:#4ade80;margin-bottom:15px}
-.result p{margin:8px}
-.footer{text-align:center;color:#94a3b8;margin-top:22px;font-size:13px}
-@media(max-width:600px){
- .container{padding:18px}
+.result h3{color:var(--green);margin-bottom:12px}
+.result-grid{
+ display:grid;grid-template-columns:repeat(2,1fr);
+ gap:12px;margin:15px 0;
+}
+.result-item{background:var(--card);padding:13px;border-radius:9px}
+.result-item strong{
+ display:block;font-size:22px;color:var(--primary);
+}
+.result-item small{color:var(--muted)}
+.side-card{margin-bottom:18px}
+.side-card h3{font-size:17px;margin-bottom:15px}
+.xp-track{
+ height:9px;background:var(--border);
+ border-radius:20px;overflow:hidden;margin:12px 0;
+}
+.xp-track div{height:100%;background:#eab308;width:0}
+.level-info{
+ display:flex;justify-content:space-between;
+ font-size:12px;color:var(--muted);
+}
+.achievement{
+ display:flex;gap:12px;align-items:center;
+ padding:11px 0;border-bottom:1px solid var(--border);
+}
+.achievement:last-child{border:0}
+.achievement-icon{
+ width:38px;height:38px;display:grid;
+ place-items:center;background:var(--soft);
+ border-radius:10px;font-size:20px;
+}
+.achievement small{
+ display:block;color:var(--muted);margin-top:4px;
+}
+.locked{opacity:.4}
+canvas{width:100%;height:170px;display:block}
+.history{margin-top:20px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{
+ padding:13px 10px;text-align:left;
+ border-bottom:1px solid var(--border);
+}
+th{color:var(--muted)}
+.table-wrap{overflow-x:auto}
+.badge{
+ display:inline-block;padding:5px 9px;
+ border-radius:20px;background:var(--soft);
+ color:var(--primary);font-size:11px;font-weight:bold;
+}
+.challenge{
+ background:linear-gradient(130deg,#4f46e5,#9333ea);
+ color:white;border-radius:15px;padding:20px;
+}
+.challenge p{font-size:13px;opacity:.85;margin:10px 0}
+.challenge button{background:white;color:#4f46e5}
+.footer{text-align:center;padding:30px;color:var(--muted);font-size:13px}
+.toast{
+ position:fixed;bottom:20px;right:20px;
+ background:#172337;color:white;padding:14px 20px;
+ border-radius:10px;display:none;z-index:10;
+ box-shadow:0 8px 25px #0003;
+}
+.empty{text-align:center;color:var(--muted);padding:25px}
+@media(max-width:800px){
+ .layout{grid-template-columns:1fr}
  .stats{grid-template-columns:repeat(2,1fr)}
- .passage{font-size:16px}
+}
+@media(max-width:480px){
+ .container{padding:0 12px;margin-top:20px}
+ .card{padding:15px}
+ .welcome h1{font-size:24px}
+ .passage{font-size:16px;padding:16px}
+ header{padding:15px}
+ .stats{gap:9px}
+ .stat-value{font-size:24px}
 }
 </style>
 </head>
+
 <body>
-<div class="container">
- <h1>⌨️ TypeMaster</h1>
- <p class="subtitle">Test your typing speed and improve your skills!</p>
+
+<header>
+ <div class="logo">⌨️ TypeMaster<span> Pro</span></div>
+ <div class="header-right">
+  <span id="headerLevel" class="badge">Level 1</span>
+  <button class="secondary" onclick="toggleTheme()" id="themeBtn">🌙 Theme</button>
+ </div>
+</header>
+
+<main class="container">
+
+ <div class="welcome">
+  <h1>Welcome to TypeMaster Pro 🚀</h1>
+  <p>Practice smarter, type faster and track your progress every day.</p>
+ </div>
 
  <div class="stats">
-  <div class="stat"><h2 id="time">60</h2><p>Seconds Left</p></div>
-  <div class="stat"><h2 id="wpm">0</h2><p>WPM</p></div>
-  <div class="stat"><h2 id="accuracy">100%</h2><p>Accuracy</p></div>
-  <div class="stat"><h2 id="errors">0</h2><p>Errors</p></div>
+  <div class="card">
+   <div class="stat-icon">⚡</div>
+   <div class="stat-value" id="bestWpm">0</div>
+   <div class="stat-label">Personal Best WPM</div>
+  </div>
+  <div class="card">
+   <div class="stat-icon">🎯</div>
+   <div class="stat-value" id="avgAccuracy">0%</div>
+   <div class="stat-label">Average Accuracy</div>
+  </div>
+  <div class="card">
+   <div class="stat-icon">🏆</div>
+   <div class="stat-value" id="totalTests">0</div>
+   <div class="stat-label">Tests Completed</div>
+  </div>
+  <div class="card">
+   <div class="stat-icon">⭐</div>
+   <div class="stat-value" id="totalXP">0</div>
+   <div class="stat-label">Total XP</div>
+  </div>
  </div>
 
- <div class="controls">
-  <select id="duration">
-   <option value="30">30 Seconds</option>
-   <option value="60" selected>60 Seconds</option>
-   <option value="120">120 Seconds</option>
-  </select>
-  <button onclick="startTest()">Start Test</button>
-  <button onclick="resetTest()">Restart</button>
+ <div class="layout">
+  <div>
+
+   <div class="card">
+    <div class="section-title">
+     <h2>⌨️ Typing Arena</h2>
+     <span class="badge" id="status">Ready</span>
+    </div>
+
+    <div class="controls">
+     <select id="mode">
+      <option value="classic">Classic Mode</option>
+      <option value="words">Words Mode</option>
+      <option value="quotes">Quotes Mode</option>
+      <option value="code">Coding Mode</option>
+     </select>
+
+     <select id="duration">
+      <option value="30">30 Seconds</option>
+      <option value="60" selected>60 Seconds</option>
+      <option value="120">120 Seconds</option>
+     </select>
+
+     <select id="difficulty">
+      <option value="easy">Easy</option>
+      <option value="medium" selected>Medium</option>
+      <option value="hard">Hard</option>
+     </select>
+    </div>
+
+    <div class="passage" id="passage"></div>
+
+    <textarea id="typing" disabled
+     placeholder="Press Start Test and start typing here..."
+     spellcheck="false" autocomplete="off"></textarea>
+
+    <div class="progress">
+     <div id="progressBar"></div>
+    </div>
+
+    <div class="live-stats">
+     <div class="live-box">
+      <strong id="timer">60</strong>
+      <small>Seconds Left</small>
+     </div>
+     <div class="live-box">
+      <strong id="wpm">0</strong>
+      <small>Live WPM</small>
+     </div>
+     <div class="live-box">
+      <strong id="accuracy">100%</strong>
+      <small>Accuracy</small>
+     </div>
+    </div>
+
+    <div class="controls" style="margin-top:18px">
+     <button onclick="startTest()">▶ Start Test</button>
+     <button class="secondary" onclick="resetTest()">↻ Restart</button>
+     <button class="secondary" onclick="newPassage()">🔄 New Text</button>
+    </div>
+
+    <div class="result" id="result">
+     <h3>🎉 Test Completed!</h3>
+     <p id="resultMessage">Great work!</p>
+
+     <div class="result-grid">
+      <div class="result-item">
+       <strong id="finalWpm">0</strong>
+       <small>Words Per Minute</small>
+      </div>
+      <div class="result-item">
+       <strong id="finalAccuracy">0%</strong>
+       <small>Accuracy</small>
+      </div>
+      <div class="result-item">
+       <strong id="finalErrors">0</strong>
+       <small>Total Errors</small>
+      </div>
+      <div class="result-item">
+       <strong id="finalXP">0</strong>
+       <small>XP Earned</small>
+      </div>
+     </div>
+
+     <button onclick="startTest()">Try Again</button>
+     <button class="secondary" onclick="certificate()">🎓 Certificate</button>
+    </div>
+   </div>
+
+   <div class="card history">
+    <div class="section-title">
+     <h2>📈 Live WPM Performance</h2>
+     <span class="badge">Live Graph</span>
+    </div>
+    <canvas id="chart" width="700" height="180"></canvas>
+   </div>
+
+   <div class="card history">
+    <div class="section-title">
+     <h2>📋 Typing History</h2>
+     <button class="secondary" onclick="downloadHistory()">⬇ Export CSV</button>
+    </div>
+
+    <div class="table-wrap">
+     <table>
+      <thead>
+       <tr>
+        <th>Date</th><th>Mode</th><th>WPM</th>
+        <th>Accuracy</th><th>XP</th>
+       </tr>
+      </thead>
+      <tbody id="historyBody"></tbody>
+     </table>
+    </div>
+
+    <button class="danger" onclick="clearHistory()" style="margin-top:15px">
+     Clear History
+    </button>
+   </div>
+
+  </div>
+
+  <aside>
+
+   <div class="challenge side-card">
+    <h3>🔥 Daily Challenge</h3>
+    <p>Complete one typing test with at least 90% accuracy and earn bonus XP.</p>
+    <div id="challengeStatus">Today's challenge: Not completed</div>
+    <button style="margin-top:15px" onclick="startDaily()">Start Challenge</button>
+   </div>
+
+   <div class="card side-card">
+    <h3>⭐ Your Level</h3>
+    <h2 id="levelName">Beginner</h2>
+    <div class="xp-track">
+     <div id="xpBar"></div>
+    </div>
+    <div class="level-info">
+     <span id="currentXP">0 XP</span>
+     <span id="nextXP">100 XP</span>
+    </div>
+    <p style="color:var(--muted);font-size:12px;margin-top:13px">
+     Complete tests to collect XP and unlock new levels.
+    </p>
+   </div>
+
+   <div class="card side-card">
+    <h3>🏅 Achievements</h3>
+    <div id="achievements"></div>
+   </div>
+
+   <div class="card side-card">
+    <h3>💡 Typing Tips</h3>
+    <div style="line-height:2;color:var(--muted);font-size:13px">
+     <p>✓ Keep your fingers on the home row.</p>
+     <p>✓ Focus on accuracy before speed.</p>
+     <p>✓ Avoid looking at your keyboard.</p>
+     <p>✓ Practice at least 10 minutes daily.</p>
+     <p>✓ Maintain a comfortable posture.</p>
+    </div>
+   </div>
+
+  </aside>
  </div>
+</main>
 
- <div class="passage" id="passage"></div>
-
- <textarea id="typing" placeholder="Click Start Test and type the passage here..." disabled></textarea>
-
- <div class="progress"><div id="progressBar"></div></div>
-
- <div class="result" id="result">
-  <h2>🎉 Test Completed!</h2>
-  <p id="finalWpm"></p>
-  <p id="finalAccuracy"></p>
-  <p id="finalErrors"></p>
-  <p id="finalTime"></p>
-  <button onclick="startTest()">Try Again</button>
- </div>
-
- <p class="footer">Practice daily. Type faster. Improve your accuracy.</p>
+<div class="footer">
+ TypeMaster Pro © 2026 | Practice Daily. Improve Continuously.
 </div>
+<div class="toast" id="toast" role="status"></div>
 
 <script>
-const passages=[
- "Learning is a continuous journey that helps us grow and achieve our goals. Practice every day and never stop exploring new ideas.",
+"use strict";
+
+const $ = id => document.getElementById(id);
+const typing = $("typing");
+
+const passages = {
+ easy:[
+ "Learning new skills every day makes life better. Practice slowly and enjoy the journey.",
+ "Small steps and daily practice can help you achieve your biggest goals.",
+ "Typing is a useful skill that saves time and improves productivity."
+ ],
+ medium:[
  "Technology has changed the way people communicate, work and learn. Computers make many daily activities faster and easier.",
  "Success comes from consistent effort, patience and determination. Small improvements every day can create amazing results.",
  "JavaScript is a popular programming language used to create interactive websites and modern web applications.",
  "Reading books improves knowledge, vocabulary and creativity. A good habit of reading can make a big difference in life."
+ ],
+ hard:[
+ "A successful developer understands algorithms, asynchronous programming, debugging, optimization, and scalable application architecture.",
+ "Artificial intelligence is transforming industries through machine learning, natural language processing, automation, and advanced predictive analytics."
+ ],
+ quotes:[
+ "The secret of getting ahead is getting started.",
+ "Great things are done by a series of small things brought together.",
+ "It always seems impossible until it is done.",
+ "Success is the sum of small efforts repeated day in and day out."
+ ],
+ code:[
+ "function greet(name) { return 'Hello ' + name; }",
+ "const numbers = [1, 2, 3, 4, 5]; console.log(numbers.length);",
+ "for (let i = 0; i < 10; i++) { console.log(i); }",
+ "const user = { name: 'Alex', age: 22, active: true };",
+ "const calculate = (a, b) => { return a + b; };"
+ ],
+ words:[
+ "apple orange banana computer keyboard screen window table garden river mountain",
+ "javascript website developer coding learning practice progress challenge success",
+ "creative intelligent beautiful powerful responsive interactive professional modern"
+ ]
+};
+
+// Safely load saved progress.
+function loadData(){
+ try{
+  const saved=JSON.parse(localStorage.getItem("typemasterData")||"{}");
+  return {
+   xp:Number(saved.xp)||0,
+   history:Array.isArray(saved.history)?saved.history:[],
+   unlocked:Array.isArray(saved.unlocked)?saved.unlocked:[],
+   daily:typeof saved.daily==="string"?saved.daily:""
+  };
+ }catch(error){
+  return {xp:0,history:[],unlocked:[],daily:""};
+ }
+}
+
+let data=loadData();
+let timer=null;
+let started=false;
+let finished=false;
+let dailyMode=false;
+let originalText="";
+let totalTime=60;
+let timeLeft=60;
+let startTimestamp=0;
+let graphData=[];
+let lastResult=null;
+let toastTimer=null;
+
+const achievements=[
+ {id:"first",icon:"🎯",name:"First Test",desc:"Complete your first test",check:()=>data.history.length>=1},
+ {id:"speed",icon:"⚡",name:"Speed Demon",desc:"Reach 50 WPM",check:()=>data.history.some(x=>x.wpm>=50)},
+ {id:"accuracy",icon:"🎯",name:"Perfect Aim",desc:"Reach 100% accuracy",check:()=>data.history.some(x=>x.accuracy===100)},
+ {id:"tests",icon:"🏆",name:"Dedicated Typist",desc:"Complete 10 tests",check:()=>data.history.length>=10},
+ {id:"expert",icon:"🚀",name:"Typing Expert",desc:"Reach 80 WPM",check:()=>data.history.some(x=>x.wpm>=80)},
+ {id:"consistent",icon:"🔥",name:"Consistency",desc:"Complete 20 tests",check:()=>data.history.length>=20}
 ];
 
-let originalText="",timer=null,timeLeft=60,totalTime=60;
-let started=false,finished=false;
+function save(){
+ try{
+  localStorage.setItem("typemasterData",JSON.stringify(data));
+ }catch(error){
+  toast("Unable to save data in this browser.");
+ }
+}
 
-const typing=document.getElementById("typing");
-const passage=document.getElementById("passage");
+function toast(message){
+ const t=$("toast");
+ t.textContent=message;
+ t.style.display="block";
+ clearTimeout(toastTimer);
+ toastTimer=setTimeout(()=>t.style.display="none",2500);
+}
+
+function today(){
+ const d=new Date();
+ return [
+  d.getFullYear(),
+  String(d.getMonth()+1).padStart(2,"0"),
+  String(d.getDate()).padStart(2,"0")
+ ].join("-");
+}
+
+function level(){
+ return Math.floor(data.xp/100)+1;
+}
+
+function levelName(l){
+ if(l>=10)return "Typing Legend";
+ if(l>=7)return "Master Typist";
+ if(l>=4)return "Pro Typist";
+ if(l>=2)return "Intermediate";
+ return "Beginner";
+}
+
+function escapeHTML(value){
+ return String(value).replace(/[&<>"']/g,c=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",
+  '"':"&quot;","'":"&#39;"
+ })[c]);
+}
+
+function updateDashboard(){
+ const best=Math.max(0,...data.history.map(x=>Number(x.wpm)||0));
+
+ const avg=data.history.length
+ ?Math.round(data.history.reduce((s,x)=>s+(Number(x.accuracy)||0),0)/data.history.length)
+ :0;
+
+ $("bestWpm").textContent=best;
+ $("avgAccuracy").textContent=avg+"%";
+ $("totalTests").textContent=data.history.length;
+ $("totalXP").textContent=data.xp;
+
+ const l=level();
+ $("headerLevel").textContent="Level "+l;
+ $("levelName").textContent=levelName(l);
+ $("currentXP").textContent=(data.xp%100)+" XP";
+ $("nextXP").textContent=(100-data.xp%100)+" XP to next level";
+ $("xpBar").style.width=(data.xp%100)+"%";
+
+ $("challengeStatus").textContent=data.daily===today()
+ ? "✓ Daily challenge completed!"
+ : "Today's challenge: Not completed";
+
+ renderAchievements();
+ renderHistory();
+}
+
+function renderAchievements(){
+ $("achievements").innerHTML=achievements.map(a=>{
+  const unlocked=a.check();
+
+  if(unlocked&&!data.unlocked.includes(a.id)){
+   data.unlocked.push(a.id);
+   save();
+   toast("🏅 Achievement unlocked: "+a.name);
+  }
+
+  return `
+   <div class="achievement ${unlocked?"":"locked"}">
+    <div class="achievement-icon">${unlocked?a.icon:"🔒"}</div>
+    <div>
+     <b>${a.name}</b>
+     <small>${unlocked?"Unlocked":a.desc}</small>
+    </div>
+   </div>`;
+ }).join("");
+}
+
+function renderHistory(){
+ const body=$("historyBody");
+
+ if(!data.history.length){
+  body.innerHTML='<tr><td colspan="5" class="empty">No tests yet. Start your first test!</td></tr>';
+  return;
+ }
+
+ body.innerHTML=data.history.slice().reverse().slice(0,20).map(x=>`
+  <tr>
+   <td>${escapeHTML(x.date)}</td>
+   <td>${escapeHTML(x.mode)}</td>
+   <td><b>${Number(x.wpm)||0}</b></td>
+   <td>${Number(x.accuracy)||0}%</td>
+   <td>+${Number(x.xp)||0}</td>
+  </tr>
+ `).join("");
+}
+
+function getPassage(){
+ const mode=$("mode").value;
+ const difficulty=$("difficulty").value;
+
+ let list;
+
+ if(mode==="classic"){
+  list=passages[difficulty];
+ }else{
+  list=passages[mode];
+ }
+
+ if(!list||!list.length)list=passages.medium;
+
+ return list[Math.floor(Math.random()*list.length)];
+}
 
 function choosePassage(){
- originalText=passages[Math.floor(Math.random()*passages.length)];
- passage.innerHTML="";
- [...originalText].forEach((char,index)=>{
+ originalText=getPassage();
+ $("passage").replaceChildren();
+
+ [...originalText].forEach((char,i)=>{
   const span=document.createElement("span");
   span.textContent=char;
-  if(index===0)span.classList.add("current");
-  passage.appendChild(span);
+  if(i===0)span.classList.add("current");
+  $("passage").appendChild(span);
  });
 }
 
+function stopTimer(){
+ if(timer!==null){
+  clearInterval(timer);
+  timer=null;
+ }
+}
+
 function startTest(){
- clearInterval(timer);
- totalTime=Number(document.getElementById("duration").value);
+ stopTimer();
+
+ totalTime=Number($("duration").value);
  timeLeft=totalTime;
+
  started=false;
  finished=false;
- typing.disabled=false;
+ dailyMode=false;
+ graphData=[];
+ lastResult=null;
+
  typing.value="";
+ typing.disabled=false;
+
+ $("result").style.display="none";
+ $("timer").textContent=timeLeft;
+ $("wpm").textContent=0;
+ $("accuracy").textContent="100%";
+ $("progressBar").style.width="0%";
+ $("status").textContent="Ready";
+
+ choosePassage();
+ drawGraph();
  typing.focus();
- document.getElementById("result").style.display="none";
- document.getElementById("time").textContent=timeLeft;
- document.getElementById("wpm").textContent=0;
- document.getElementById("accuracy").textContent="100%";
- document.getElementById("errors").textContent=0;
- document.getElementById("progressBar").style.width="0%";
+}
+
+function startDaily(){
+ if(data.daily===today()){
+  toast("You have already completed today's challenge!");
+  return;
+ }
+
+ $("mode").value="quotes";
+ $("difficulty").value="medium";
+ $("duration").value="60";
+
+ startTest();
+ dailyMode=true;
+ toast("🔥 Daily challenge started!");
+}
+
+function newPassage(){
+ if(started&&!finished){
+  toast("Restart or finish the current test first.");
+  return;
+ }
+ resetTest();
  choosePassage();
 }
 
 function resetTest(){
- clearInterval(timer);
+ stopTimer();
+
  started=false;
  finished=false;
- typing.value="";
+ dailyMode=false;
+
  typing.disabled=true;
- timeLeft=Number(document.getElementById("duration").value);
- document.getElementById("time").textContent=timeLeft;
- document.getElementById("wpm").textContent=0;
- document.getElementById("accuracy").textContent="100%";
- document.getElementById("errors").textContent=0;
- document.getElementById("progressBar").style.width="0%";
- document.getElementById("result").style.display="none";
+ typing.value="";
+
+ totalTime=Number($("duration").value);
+ timeLeft=totalTime;
+
+ $("timer").textContent=timeLeft;
+ $("wpm").textContent=0;
+ $("accuracy").textContent="100%";
+ $("progressBar").style.width="0%";
+ $("result").style.display="none";
+ $("status").textContent="Ready";
+
+ graphData=[];
  choosePassage();
+ drawGraph();
+}
+
+function elapsedSeconds(){
+ if(!started)return 0;
+ return Math.min(totalTime,(Date.now()-startTimestamp)/1000);
+}
+
+function calculate(){
+ const input=typing.value;
+ let correct=0;
+
+ for(let i=0;i<input.length;i++){
+  if(input[i]===originalText[i])correct++;
+ }
+
+ const errors=input.length-correct;
+ const elapsed=Math.max(elapsedSeconds(),0.001);
+ const minutes=elapsed/60;
+
+ const wpm=minutes>0
+  ?Math.round((correct/5)/minutes)
+  :0;
+
+ const accuracy=input.length
+  ?Math.round(correct/input.length*100)
+  :100;
+
+ return {correct,errors,wpm,accuracy,input};
 }
 
 function updateStats(){
- const input=typing.value;
- let correct=0,errors=0;
+ const s=calculate();
 
- [...input].forEach((char,index)=>{
-  if(char===originalText[index])correct++;
-  else errors++;
- });
+ $("wpm").textContent=s.wpm;
+ $("accuracy").textContent=s.accuracy+"%";
 
- const elapsed=totalTime-timeLeft;
- const minutes=Math.max(elapsed/60,1/60);
- const wpm=Math.round((correct/5)/minutes);
- const accuracy=input.length===0?100:
-  Math.round((correct/input.length)*100);
+ $("progressBar").style.width=
+ Math.min(100,typing.value.length/originalText.length*100)+"%";
 
- document.getElementById("wpm").textContent=wpm;
- document.getElementById("accuracy").textContent=accuracy+"%";
- document.getElementById("errors").textContent=errors;
-
- [...passage.children].forEach((span,index)=>{
+ [...$("passage").children].forEach((span,i)=>{
   span.className="";
-  if(index<input.length){
-   span.classList.add(input[index]===originalText[index]?"correct":"incorrect");
+
+  if(i<typing.value.length){
+   span.classList.add(
+    typing.value[i]===originalText[i]?"correct":"incorrect"
+   );
   }
-  if(index===input.length)span.classList.add("current");
+
+  if(i===typing.value.length){
+   span.classList.add("current");
+  }
  });
 
- document.getElementById("progressBar").style.width=
-  Math.min((input.length/originalText.length)*100,100)+"%";
+}
 
- if(input.length>=originalText.length)endTest();
+function startClock(){
+ startTimestamp=Date.now();
+ started=true;
+
+ $("status").textContent="Running";
+
+ timer=setInterval(()=>{
+  const elapsed=elapsedSeconds();
+
+  timeLeft=Math.max(0,Math.ceil(totalTime-elapsed));
+  $("timer").textContent=timeLeft;
+
+  const s=calculate();
+  graphData.push(s.wpm);
+
+  if(graphData.length>120)graphData.shift();
+
+  drawGraph();
+
+  if(elapsed>=totalTime){
+   endTest();
+  }
+ },250);
 }
 
 typing.addEventListener("input",()=>{
  if(finished)return;
 
  if(!started){
-  started=true;
-  timer=setInterval(()=>{
-   timeLeft--;
-   document.getElementById("time").textContent=timeLeft;
-   if(timeLeft<=0)endTest();
-  },1000);
+  startClock();
  }
+
  updateStats();
+
+ if(typing.value.length>=originalText.length){
+  endTest();
+ }
 });
 
 function endTest(){
  if(finished)return;
+
  finished=true;
- clearInterval(timer);
+ stopTimer();
+
  typing.disabled=true;
+ $("status").textContent="Completed";
 
- const input=typing.value;
- let correct=0,errors=0;
+ const s=calculate();
 
- [...input].forEach((char,index)=>{
-  if(char===originalText[index])correct++;
-  else errors++;
- });
+ const baseXP=Math.max(
+  5,
+  Math.round(s.wpm/2)+Math.round(s.accuracy/10)
+ );
 
- const elapsed=Math.max((totalTime-timeLeft)/60,1/60);
- const wpm=Math.round((correct/5)/elapsed);
- const accuracy=input.length?Math.round(correct/input.length*100):100;
+ let bonusXP=0;
 
- document.getElementById("finalWpm").textContent="Typing Speed: "+wpm+" WPM";
- document.getElementById("finalAccuracy").textContent="Accuracy: "+accuracy+"%";
- document.getElementById("finalErrors").textContent="Errors: "+errors;
- document.getElementById("finalTime").textContent=
-  "Time Used: "+(totalTime-timeLeft)+" seconds";
- document.getElementById("result").style.display="block";
+ if(dailyMode&&s.accuracy>=90&&data.daily!==today()){
+  bonusXP=50;
+  data.daily=today();
+  toast("🎉 Daily challenge completed! +50 bonus XP");
+ }else if(dailyMode&&s.accuracy<90){
+  toast("Try again with at least 90% accuracy!");
+ }
+
+ const earnedXP=baseXP+bonusXP;
+
+ const result={
+  date:new Date().toLocaleDateString(),
+  mode:$("mode").value,
+  wpm:s.wpm,
+  accuracy:s.accuracy,
+  errors:s.errors,
+  xp:earnedXP
+ };
+
+ data.history.push(result);
+ data.xp+=earnedXP;
+
+ save();
+ lastResult=result;
+
+ $("finalWpm").textContent=s.wpm+" WPM";
+ $("finalAccuracy").textContent=s.accuracy+"%";
+ $("finalErrors").textContent=s.errors;
+ $("finalXP").textContent="+"+earnedXP;
+
+ $("resultMessage").textContent=
+  s.wpm>=60?"Excellent! You're a fast typist!":
+  s.wpm>=35?"Great work! Keep improving!":
+  "Good practice! Keep working on your speed.";
+
+ $("result").style.display="block";
+
+ updateDashboard();
 }
 
+function drawGraph(){
+ const canvas=$("chart");
+ const ctx=canvas.getContext("2d");
+ const w=canvas.width;
+ const h=canvas.height;
+
+ ctx.clearRect(0,0,w,h);
+
+ ctx.strokeStyle=document.body.classList.contains("dark")
+  ?"#334155":"#e2e8f0";
+
+ ctx.lineWidth=1;
+
+ for(let i=1;i<=4;i++){
+  const y=i*h/5;
+  ctx.beginPath();
+  ctx.moveTo(0,y);
+  ctx.lineTo(w,y);
+  ctx.stroke();
+ }
+
+ if(!graphData.length){
+  ctx.fillStyle="#94a3b8";
+  ctx.font="15px Arial";
+  ctx.textAlign="center";
+  ctx.fillText("Your live typing graph will appear here",w/2,h/2);
+  return;
+ }
+
+ const max=Math.max(30,...graphData)*1.2;
+
+ const points=graphData.map((v,i)=>({
+  x:graphData.length===1?w/2:i/(graphData.length-1)*w,
+  y:h-15-(v/max)*(h-30)
+ }));
+
+ ctx.beginPath();
+
+ points.forEach((p,i)=>{
+  if(i===0)ctx.moveTo(p.x,p.y);
+  else ctx.lineTo(p.x,p.y);
+ });
+
+ ctx.lineWidth=3;
+ ctx.strokeStyle="#6366f1";
+ ctx.stroke();
+
+ ctx.lineTo(points[points.length-1].x,h);
+ ctx.lineTo(points[0].x,h);
+ ctx.closePath();
+
+ ctx.fillStyle="#6366f122";
+ ctx.fill();
+
+ points.forEach(p=>{
+  ctx.beginPath();
+  ctx.arc(p.x,p.y,4,0,Math.PI*2);
+  ctx.fillStyle="#6366f1";
+  ctx.fill();
+ });
+}
+
+function toggleTheme(){
+ document.body.classList.toggle("dark");
+
+ const dark=document.body.classList.contains("dark");
+
+ $("themeBtn").textContent=dark?"☀️ Theme":"🌙 Theme";
+
+ localStorage.setItem("typeTheme",dark?"dark":"light");
+
+ drawGraph();
+}
+
+function downloadHistory(){
+ if(!data.history.length){
+  toast("No history available to download.");
+  return;
+ }
+
+ const rows=[
+  ["Date","Mode","WPM","Accuracy","Errors","XP"],
+  ...data.history.map(x=>[
+   x.date,x.mode,x.wpm,x.accuracy,x.errors,x.xp
+  ])
+ ];
+
+ const csv=rows.map(row=>
+  row.map(value=>'"'+String(value).replace(/"/g,'""')+'"').join(",")
+ ).join("\r\n");
+
+ const blob=new Blob(["\uFEFF"+csv],{
+  type:"text/csv;charset=utf-8;"
+ });
+
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+
+ a.href=url;
+ a.download="TypeMaster-History.csv";
+
+ document.body.appendChild(a);
+ a.click();
+ a.remove();
+
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+function clearHistory(){
+ if(!confirm("Delete all typing history and progress?"))return;
+
+ data={
+  xp:0,
+  history:[],
+  unlocked:[],
+  daily:""
+ };
+
+ lastResult=null;
+ save();
+ updateDashboard();
+
+ toast("History and progress cleared.");
+}
+
+function certificate(){
+ if(!lastResult){
+  toast("Complete a test to earn a certificate.");
+  return;
+ }
+
+ const name=prompt("Enter your name for the certificate:","Typing Champion");
+
+ if(!name||!name.trim())return;
+
+ const win=window.open("","_blank");
+
+ if(!win){
+  toast("Please allow pop-ups to print your certificate.");
+  return;
+ }
+
+ win.document.write(`
+ <!DOCTYPE html>
+ <html>
+ <head>
+ <title>Typing Certificate</title>
+ <style>
+ body{
+  font-family:Georgia,serif;text-align:center;
+  padding:40px;color:#172337;
+ }
+ .cert{
+  border:10px double #6366f1;
+  padding:50px;min-height:430px;
+ }
+ h1{font-size:38px;color:#4f46e5;margin:25px}
+ h2{font-size:28px;margin:25px}
+ p{font-size:18px;line-height:2}
+ .score{font-size:24px;color:#4f46e5;font-weight:bold}
+ @media print{button{display:none}}
+ </style>
+ </head>
+ <body>
+ <div class="cert">
+  <h1>🏆 Certificate of Achievement</h1>
+  <p>This certificate is proudly presented to</p>
+  <h2>${escapeHTML(name.trim())}</h2>
+  <p>For successfully completing the TypeMaster Pro typing test.</p>
+  <p class="score">${lastResult.wpm} WPM | ${lastResult.accuracy}% Accuracy</p>
+  <p>Date: ${new Date().toLocaleDateString()}</p>
+  <p>TypeMaster Pro</p>
+ </div>
+ <script>
+ window.onload=()=>window.print();
+ <\/script>
+ </body>
+ </html>
+ `);
+
+ win.document.close();
+}
+
+// Restore saved theme.
+if(localStorage.getItem("typeTheme")==="dark"){
+ document.body.classList.add("dark");
+ $("themeBtn").textContent="☀️ Theme";
+}
+
+// Initial setup.
 choosePassage();
+updateDashboard();
+drawGraph();
+
+$("timer").textContent=$("duration").value;
+
+// Update timer display when duration changes before starting.
+$("duration").addEventListener("change",()=>{
+ if(!started&&!finished){
+  totalTime=Number($("duration").value);
+  timeLeft=totalTime;
+  $("timer").textContent=timeLeft;
+ }
+});
+
+// Changing passage settings during a test is prevented.
+["mode","difficulty","duration"].forEach(id=>{
+ $(id).addEventListener("change",()=>{
+  if(started&&!finished){
+   toast("Finish or restart before changing settings.");
+  }else{
+   resetTest();
+  }
+ });
+});
+
 </script>
 </body>
 </html>
