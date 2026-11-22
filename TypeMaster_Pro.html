@@ -1,0 +1,257 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TypeMaster - Typing Speed Test</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+ font-family:Arial,sans-serif;
+ background:linear-gradient(135deg,#101827,#243b55);
+ color:#fff;min-height:100vh;padding:25px;
+ display:flex;justify-content:center;align-items:center
+}
+.container{
+ width:100%;max-width:850px;background:#172337;
+ padding:30px;border-radius:20px;
+ box-shadow:0 15px 40px #0005
+}
+h1{text-align:center;color:#60a5fa;margin-bottom:10px}
+.subtitle{text-align:center;color:#aab8cc;margin-bottom:25px}
+.stats{
+ display:grid;grid-template-columns:repeat(4,1fr);
+ gap:12px;margin-bottom:25px
+}
+.stat{
+ background:#24344d;padding:18px 8px;
+ border-radius:12px;text-align:center
+}
+.stat h2{color:#60a5fa;font-size:27px}
+.stat p{color:#aab8cc;font-size:13px;margin-top:5px}
+.controls{
+ display:flex;justify-content:center;gap:10px;
+ flex-wrap:wrap;margin-bottom:20px
+}
+button,select{
+ padding:11px 17px;border:0;border-radius:8px;
+ cursor:pointer;font-size:14px;font-weight:bold
+}
+button{background:#3b82f6;color:white}
+button:hover{background:#2563eb}
+select{background:#24344d;color:white}
+.passage{
+ background:#24344d;padding:22px;border-radius:12px;
+ font-size:19px;line-height:1.8;
+ margin-bottom:18px;min-height:125px
+}
+.correct{color:#4ade80}
+.incorrect{color:#fb7185;background:#7f1d1d55}
+.current{border-bottom:2px solid #60a5fa}
+textarea{
+ width:100%;height:130px;padding:15px;
+ border-radius:10px;border:2px solid #3b82f6;
+ background:#101827;color:white;font-size:17px;
+ resize:none;outline:none
+}
+textarea:disabled{opacity:.6}
+.progress{
+ height:9px;background:#334155;border-radius:10px;
+ margin-top:18px;overflow:hidden
+}
+#progressBar{
+ width:0%;height:100%;background:#60a5fa;
+ transition:width .2s
+}
+.result{
+ display:none;background:#24344d;padding:22px;
+ border-radius:12px;margin-top:20px;text-align:center
+}
+.result h2{color:#4ade80;margin-bottom:15px}
+.result p{margin:8px}
+.footer{text-align:center;color:#94a3b8;margin-top:22px;font-size:13px}
+@media(max-width:600px){
+ .container{padding:18px}
+ .stats{grid-template-columns:repeat(2,1fr)}
+ .passage{font-size:16px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+ <h1>⌨️ TypeMaster</h1>
+ <p class="subtitle">Test your typing speed and improve your skills!</p>
+
+ <div class="stats">
+  <div class="stat"><h2 id="time">60</h2><p>Seconds Left</p></div>
+  <div class="stat"><h2 id="wpm">0</h2><p>WPM</p></div>
+  <div class="stat"><h2 id="accuracy">100%</h2><p>Accuracy</p></div>
+  <div class="stat"><h2 id="errors">0</h2><p>Errors</p></div>
+ </div>
+
+ <div class="controls">
+  <select id="duration">
+   <option value="30">30 Seconds</option>
+   <option value="60" selected>60 Seconds</option>
+   <option value="120">120 Seconds</option>
+  </select>
+  <button onclick="startTest()">Start Test</button>
+  <button onclick="resetTest()">Restart</button>
+ </div>
+
+ <div class="passage" id="passage"></div>
+
+ <textarea id="typing" placeholder="Click Start Test and type the passage here..." disabled></textarea>
+
+ <div class="progress"><div id="progressBar"></div></div>
+
+ <div class="result" id="result">
+  <h2>🎉 Test Completed!</h2>
+  <p id="finalWpm"></p>
+  <p id="finalAccuracy"></p>
+  <p id="finalErrors"></p>
+  <p id="finalTime"></p>
+  <button onclick="startTest()">Try Again</button>
+ </div>
+
+ <p class="footer">Practice daily. Type faster. Improve your accuracy.</p>
+</div>
+
+<script>
+const passages=[
+ "Learning is a continuous journey that helps us grow and achieve our goals. Practice every day and never stop exploring new ideas.",
+ "Technology has changed the way people communicate, work and learn. Computers make many daily activities faster and easier.",
+ "Success comes from consistent effort, patience and determination. Small improvements every day can create amazing results.",
+ "JavaScript is a popular programming language used to create interactive websites and modern web applications.",
+ "Reading books improves knowledge, vocabulary and creativity. A good habit of reading can make a big difference in life."
+];
+
+let originalText="",timer=null,timeLeft=60,totalTime=60;
+let started=false,finished=false;
+
+const typing=document.getElementById("typing");
+const passage=document.getElementById("passage");
+
+function choosePassage(){
+ originalText=passages[Math.floor(Math.random()*passages.length)];
+ passage.innerHTML="";
+ [...originalText].forEach((char,index)=>{
+  const span=document.createElement("span");
+  span.textContent=char;
+  if(index===0)span.classList.add("current");
+  passage.appendChild(span);
+ });
+}
+
+function startTest(){
+ clearInterval(timer);
+ totalTime=Number(document.getElementById("duration").value);
+ timeLeft=totalTime;
+ started=false;
+ finished=false;
+ typing.disabled=false;
+ typing.value="";
+ typing.focus();
+ document.getElementById("result").style.display="none";
+ document.getElementById("time").textContent=timeLeft;
+ document.getElementById("wpm").textContent=0;
+ document.getElementById("accuracy").textContent="100%";
+ document.getElementById("errors").textContent=0;
+ document.getElementById("progressBar").style.width="0%";
+ choosePassage();
+}
+
+function resetTest(){
+ clearInterval(timer);
+ started=false;
+ finished=false;
+ typing.value="";
+ typing.disabled=true;
+ timeLeft=Number(document.getElementById("duration").value);
+ document.getElementById("time").textContent=timeLeft;
+ document.getElementById("wpm").textContent=0;
+ document.getElementById("accuracy").textContent="100%";
+ document.getElementById("errors").textContent=0;
+ document.getElementById("progressBar").style.width="0%";
+ document.getElementById("result").style.display="none";
+ choosePassage();
+}
+
+function updateStats(){
+ const input=typing.value;
+ let correct=0,errors=0;
+
+ [...input].forEach((char,index)=>{
+  if(char===originalText[index])correct++;
+  else errors++;
+ });
+
+ const elapsed=totalTime-timeLeft;
+ const minutes=Math.max(elapsed/60,1/60);
+ const wpm=Math.round((correct/5)/minutes);
+ const accuracy=input.length===0?100:
+  Math.round((correct/input.length)*100);
+
+ document.getElementById("wpm").textContent=wpm;
+ document.getElementById("accuracy").textContent=accuracy+"%";
+ document.getElementById("errors").textContent=errors;
+
+ [...passage.children].forEach((span,index)=>{
+  span.className="";
+  if(index<input.length){
+   span.classList.add(input[index]===originalText[index]?"correct":"incorrect");
+  }
+  if(index===input.length)span.classList.add("current");
+ });
+
+ document.getElementById("progressBar").style.width=
+  Math.min((input.length/originalText.length)*100,100)+"%";
+
+ if(input.length>=originalText.length)endTest();
+}
+
+typing.addEventListener("input",()=>{
+ if(finished)return;
+
+ if(!started){
+  started=true;
+  timer=setInterval(()=>{
+   timeLeft--;
+   document.getElementById("time").textContent=timeLeft;
+   if(timeLeft<=0)endTest();
+  },1000);
+ }
+ updateStats();
+});
+
+function endTest(){
+ if(finished)return;
+ finished=true;
+ clearInterval(timer);
+ typing.disabled=true;
+
+ const input=typing.value;
+ let correct=0,errors=0;
+
+ [...input].forEach((char,index)=>{
+  if(char===originalText[index])correct++;
+  else errors++;
+ });
+
+ const elapsed=Math.max((totalTime-timeLeft)/60,1/60);
+ const wpm=Math.round((correct/5)/elapsed);
+ const accuracy=input.length?Math.round(correct/input.length*100):100;
+
+ document.getElementById("finalWpm").textContent="Typing Speed: "+wpm+" WPM";
+ document.getElementById("finalAccuracy").textContent="Accuracy: "+accuracy+"%";
+ document.getElementById("finalErrors").textContent="Errors: "+errors;
+ document.getElementById("finalTime").textContent=
+  "Time Used: "+(totalTime-timeLeft)+" seconds";
+ document.getElementById("result").style.display="block";
+}
+
+choosePassage();
+</script>
+</body>
+</html>
